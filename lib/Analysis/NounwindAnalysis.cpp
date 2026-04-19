@@ -208,7 +208,7 @@ void computeNounwindLattice(Module &M,
 
   for (scc_iterator<CallGraph *> I = scc_begin(&CG), E = scc_end(&CG); I != E;
        ++I) {
-    solveSCC(makeArrayRef(*I), Out);
+    solveSCC(llvm::ArrayRef<llvm::CallGraphNode *>(*I), Out);
   }
 }
 

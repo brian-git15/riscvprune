@@ -1,0 +1,13 @@
+/work/riscvprune/build/CMakeFiles/intrinsics_gen.dir
+/work/riscvprune/build/CMakeFiles/omp_gen.dir
+/work/riscvprune/build/CMakeFiles/acc_gen.dir
+/work/riscvprune/build/CMakeFiles/RISCVTargetParserTableGen.dir
+/work/riscvprune/build/CMakeFiles/NounwindLTO.dir
+/work/riscvprune/build/CMakeFiles/install-NounwindLTO.dir
+/work/riscvprune/build/CMakeFiles/install-NounwindLTO-stripped.dir
+/work/riscvprune/build/CMakeFiles/edit_cache.dir
+/work/riscvprune/build/CMakeFiles/rebuild_cache.dir
+/work/riscvprune/build/CMakeFiles/list_install_components.dir
+/work/riscvprune/build/CMakeFiles/install.dir
+/work/riscvprune/build/CMakeFiles/install/local.dir
+/work/riscvprune/build/CMakeFiles/install/strip.dir

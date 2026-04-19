@@ -41,7 +41,9 @@ static bool lowerNounwindInvokes(llvm::Module &M) {
 
     llvm::CallInst *Call = B.CreateCall(Inv->getFunctionType(),
                                         Inv->getCalledOperand(), Args);
-    Call->setTailCallKind(Inv->getTailCallKind());
+    // LLVM 18: getTailCallKind() exists on CallInst only, not InvokeInst. This
+    // lowering replaces invoke with call+br; use no tail marker (valid for IR).
+    Call->setTailCallKind(llvm::CallInst::TailCallKind::TCK_None);
     Call->setCallingConv(Inv->getCallingConv());
     Call->setAttributes(Inv->getAttributes());
     Call->copyMetadata(*Inv);
