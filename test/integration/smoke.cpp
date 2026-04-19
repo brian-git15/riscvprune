@@ -1,7 +1,11 @@
-// Side effect in callee so -O1 cannot delete the whole call chain (otherwise IR
-// collapses to a single `main` that just `ret 0`).
+// Clang + -fno-exceptions usually pre-stamps nounwind, so opt may show no
+// semantic change. For a guaranteed diff from IR alone, use for_diff.ll.
+//
+// This file: clang pipeline smoke (real functions, calls preserved).
 
-static volatile int sink;
+volatile int sink;
+
+#pragma clang optimize off
 
 __attribute__((noinline)) static void callee() { sink = 1; }
 
@@ -11,3 +15,5 @@ int main() {
   caller();
   return 0;
 }
+
+#pragma clang optimize on
