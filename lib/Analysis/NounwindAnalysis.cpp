@@ -7,6 +7,7 @@
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/IntrinsicInst.h"
 
+#include <array>
 #include <optional>
 
 using namespace llvm;
@@ -24,13 +25,26 @@ static UnwindLattice join(UnwindLattice A, UnwindLattice B) {
 /// Embedded policy for libc++/Itanium-style runtime symbols that lack `nounwind`
 /// in bitcode but have a fixed contract for this pipeline.
 static std::optional<UnwindLattice> embeddedPolicyForName(StringRef Name) {
-  if (Name.contains("__cxa_throw") ||
-      Name.contains("__cxa_allocate_exception"))
-    return UnwindLattice::Throwing;
+  static constexpr std::array<StringLiteral, 3> ThrowingSubstrs = {
+      "__cxa_throw", "__cxa_rethrow", "__cxa_allocate_exception"};
+  for (StringLiteral S : ThrowingSubstrs)
+    if (Name.contains(S))
+      return UnwindLattice::Throwing;
 
-  // Itanium `operator new` / `new[]` (including sized / aligned manglings).
-  if (Name.starts_with("_Znwm") || Name.starts_with("_Znam"))
-    return UnwindLattice::Safe;
+  // Known non-throwing runtime helpers frequently reached through EH lowering.
+  static constexpr std::array<StringLiteral, 3> SafeSubstrs = {
+      "__cxa_begin_catch", "__cxa_end_catch", "__clang_call_terminate"};
+  for (StringLiteral S : SafeSubstrs)
+    if (Name.contains(S))
+      return UnwindLattice::Safe;
+
+  // Itanium `operator new` / `new[]` common mangling stems, including 32-bit,
+  // 64-bit, array, and aligned variants.
+  static constexpr std::array<StringLiteral, 4> SafePrefixes = {"_Znwm", "_Znam",
+                                                                 "_Znwj", "_Znaj"};
+  for (StringLiteral Prefix : SafePrefixes)
+    if (Name.starts_with(Prefix))
+      return UnwindLattice::Safe;
 
   return std::nullopt;
 }
