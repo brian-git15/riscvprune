@@ -19,11 +19,12 @@ RUN apt-get update && apt-get install -y \
     libclang-18-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Unversioned tool names (Ubuntu ships opt-18, not opt)
+# 2. Unversioned tool names (Ubuntu ships opt-18 / llvm-link-18, not bare names)
 RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-18 100 && \
     update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-18 100 && \
     update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-18 100 && \
-    update-alternatives --install /usr/bin/opt opt /usr/bin/opt-18 100
+    update-alternatives --install /usr/bin/opt opt /usr/bin/opt-18 100 && \
+    update-alternatives --install /usr/bin/llvm-link llvm-link /usr/bin/llvm-link-18 100
 
 # Working directory for the mounted repo (see docker-shell.sh)
 WORKDIR /work/riscvprune

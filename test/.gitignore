@@ -5,3 +5,4 @@ integration/smoke.out.ll
 integration/smoke
 integration/smoke.exe
 integration/*.o
+integration/ticket_booth/_out/

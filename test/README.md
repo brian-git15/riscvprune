@@ -49,6 +49,15 @@ opt -load-pass-plugin=./build/NounwindLTO.so -passes=nounwind-lto -S test/integr
 
 **Note:** **`clang++ -fpass-plugin=…`** loads the plugin but may not schedule **`nounwind-lto`**; use **`opt`** as above to be sure.
 
+### Multi-file encapsulating (`ticket_booth/`)
+
+Arcade claw-machine mini codebase (7 TUs): safe leaves, throwing claw,
+try/catch booth, virtual attendant. See `test/integration/ticket_booth/README.md`.
+
+```bash
+bash test/integration/ticket_booth/run.sh
+```
+
 ## WPV assumptions (Phase 1)
 
 - **Full bitcode chain required:** whole-program precision only holds when all
